@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>🧚◦Magnoria</title>
   <style>
     body {
@@ -123,7 +123,6 @@
     <h3>Mercredi</h3>
     <div class="anime">Anime D - 13h45</div>
   </div>
-  <!-- Ajoute les autres jours ici -->
 </section>
 
 <section class="comments">
@@ -137,18 +136,45 @@
   © 2025 🧚◦Magnoria — Tous droits réservés
 </footer>
 
+<!-- Firebase -->
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+
 <script>
+  const firebaseConfig = {
+    apiKey: "AlzaSy8L0pJ4F6fRpzGfPNaYR0d0JjDPGxJrJyM",
+    authDomain: "magnoria-126b7.firebaseapp.com",
+    projectId: "magnoria-126b7",
+    storageBucket: "magnoria-126b7.appspot.com",
+    messagingSenderId: "769519243584",
+    appId: "1:769519243584:web:default"
+  };
+
+  firebase.initializeApp(firebaseConfig);
+  const db = firebase.firestore();
+
   function addComment() {
     const input = document.getElementById("commentInput");
     const text = input.value.trim();
     if (text) {
-      const commentDiv = document.createElement("div");
-      commentDiv.className = "comment";
-      commentDiv.textContent = text;
-      document.getElementById("commentList").prepend(commentDiv);
+      db.collection("comments").add({
+        text: text,
+        timestamp: Date.now()
+      });
       input.value = "";
     }
   }
+
+  db.collection("comments").orderBy("timestamp", "desc").onSnapshot(snapshot => {
+    const list = document.getElementById("commentList");
+    list.innerHTML = "";
+    snapshot.forEach(doc => {
+      const div = document.createElement("div");
+      div.className = "comment";
+      div.textContent = doc.data().text;
+      list.appendChild(div);
+    });
+  });
 </script>
 
 </body>
