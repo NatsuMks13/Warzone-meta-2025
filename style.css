@@ -1,17 +1,1 @@
-document.getElementById("comment-form").addEventListener("submit", function(e) {
-  e.preventDefault();
 
-  const name = document.getElementById("name").value.trim();
-  const message = document.getElementById("message").value.trim();
-
-  if (name && message) {
-    const commentBox = document.createElement("div");
-    commentBox.className = "comment";
-    commentBox.innerHTML = `<strong>${name}</strong><p>${message}</p>`;
-
-    document.getElementById("comments").appendChild(commentBox);
-
-    // Réinitialiser le formulaire
-    document.getElementById("comment-form").reset();
-  }
-});
