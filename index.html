@@ -2,106 +2,91 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
-  <title>🧚◦Magnoria - Nouveaux Animés</title>
+  <title>🧚◦Magnoria - Planning Anime</title>
   <style>
     body {
       margin: 0;
-      font-family: 'Segoe UI', sans-serif;
-      background-color: #121212;
-      color: #ffffff;
+      background-color: #0b0c1a;
+      color: white;
+      font-family: Arial, sans-serif;
       display: flex;
     }
 
-    /* Sidebar */
     .sidebar {
-      width: 220px;
-      background-color: #1e1e1e;
+      width: 250px;
+      background: linear-gradient(to bottom, #0f0c29, #302b63);
       padding: 20px;
       height: 100vh;
-      position: fixed;
     }
 
     .sidebar h2 {
-      color: #ff3366;
-      margin-bottom: 30px;
+      font-size: 24px;
+      color: #ff4d4d;
+      margin-bottom: 20px;
     }
 
     .sidebar a {
       display: block;
-      color: #ffffff;
+      color: white;
+      padding: 10px 0;
       text-decoration: none;
-      margin: 15px 0;
-      padding: 10px;
-      border-radius: 5px;
+      border-bottom: 1px solid #333;
       transition: background 0.3s;
     }
 
     .sidebar a:hover {
-      background-color: #333333;
+      background-color: #1a1a2e;
     }
 
-    /* Main content */
-    .main {
-      margin-left: 240px;
+    .discord-link {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-top: 20px;
+      background-color: #7289da;
+      padding: 10px;
+      border-radius: 8px;
+      color: white;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    .discord-link:hover {
+      background-color: #5a6abf;
+    }
+
+    .content {
+      flex-grow: 1;
+      padding: 30px;
+    }
+
+    .planning {
+      background: linear-gradient(to right, #1a1a40, #3f0d12);
       padding: 20px;
-      flex: 1;
+      border-radius: 10px;
+      max-width: 700px;
+      margin: auto;
     }
 
-    .main h1 {
-      color: #00ccff;
+    .planning h3 {
+      color: #ff4d4d;
+      text-align: center;
       margin-bottom: 20px;
     }
 
-    .anime-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-      gap: 20px;
+    .day {
+      border-bottom: 1px solid #444;
+      padding: 10px 0;
     }
 
-    .anime-card {
-      background-color: #1e1e1e;
-      border: 1px solid #333333;
-      border-radius: 10px;
-      overflow: hidden;
-      transition: transform 0.3s;
+    .day:last-child {
+      border-bottom: none;
     }
 
-    .anime-card:hover {
-      transform: scale(1.05);
-    }
-
-    .anime-card img {
-      width: 100%;
-      height: auto;
-      display: block;
-    }
-
-    .anime-card .info {
-      padding: 10px;
-    }
-
-    .anime-card .info h3 {
-      margin: 0;
-      font-size: 1em;
-      color: #ff3366;
-    }
-
-    .anime-card .info p {
-      margin: 5px 0 0;
-      font-size: 0.9em;
-      color: #cccccc;
-    }
-
-    .anime-card .info a {
-      display: inline-block;
-      margin-top: 10px;
-      color: #00ccff;
-      text-decoration: none;
-      font-size: 0.9em;
-    }
-
-    .anime-card .info a:hover {
-      text-decoration: underline;
+    .anime {
+      padding-left: 10px;
+      margin-top: 5px;
+      color: #add8e6;
     }
   </style>
 </head>
@@ -113,61 +98,52 @@
     <a href="#">Planning</a>
     <a href="#">Aide</a>
     <a href="#">Profil</a>
+    <a class="discord-link" href="https://discord.gg/t5GxdReBb2" target="_blank">
+      <img src="https://cdn-icons-png.flaticon.com/512/2111/2111370.png" alt="Discord" width="20" height="20">
+      Aide via Discord
+    </a>
   </div>
 
-  <div class="main">
-    <h1>Nouvelle Saison</h1>
-    <div class="anime-grid" id="anime-grid">
-      <p>Chargement des animés...</p>
+  <div class="content">
+    <div class="planning">
+      <h3>Planning Hebdomadaire - Nouveaux Épisodes</h3>
+
+      <div class="day"><strong>Lundi</strong>
+        <div class="anime">- One Piece</div>
+        <div class="anime">- Wind Breaker</div>
+      </div>
+
+      <div class="day"><strong>Mardi</strong>
+        <div class="anime">- KonoSuba Saison 3</div>
+        <div class="anime">- Slime Saison 3</div>
+      </div>
+
+      <div class="day"><strong>Mercredi</strong>
+        <div class="anime">- Kaiju No.8</div>
+        <div class="anime">- Mahouka Koukou no Rettousei</div>
+      </div>
+
+      <div class="day"><strong>Jeudi</strong>
+        <div class="anime">- Re:Monster</div>
+        <div class="anime">- Yozakura-san Chi</div>
+      </div>
+
+      <div class="day"><strong>Vendredi</strong>
+        <div class="anime">- Detective Conan</div>
+        <div class="anime">- Black Clover</div>
+      </div>
+
+      <div class="day"><strong>Samedi</strong>
+        <div class="anime">- My Hero Academia</div>
+        <div class="anime">- Demon Slayer: Hashira Arc</div>
+      </div>
+
+      <div class="day"><strong>Dimanche</strong>
+        <div class="anime">- Boruto: Two Blue Vortex</div>
+        <div class="anime">- Mushoku Tensei</div>
+      </div>
     </div>
   </div>
-
-  <script>
-    const query = `
-      query {
-        Page(perPage: 12) {
-          media(season: SPRING, seasonYear: 2025, type: ANIME, sort: START_DATE_DESC) {
-            title { romaji }
-            siteUrl
-            coverImage { large }
-            season
-            seasonYear
-          }
-        }
-      }
-    `;
-
-    fetch("https://graphql.anilist.co", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "Accept": "application/json"
-      },
-      body: JSON.stringify({ query })
-    })
-    .then(res => res.json())
-    .then(data => {
-      const grid = document.getElementById("anime-grid");
-      grid.innerHTML = "";
-      data.data.Page.media.forEach(anime => {
-        const card = document.createElement("div");
-        card.className = "anime-card";
-        card.innerHTML = `
-          <img src="${anime.coverImage.large}" alt="${anime.title.romaji}">
-          <div class="info">
-            <h3>${anime.title.romaji}</h3>
-            <p>Saison: ${anime.season} ${anime.seasonYear}</p>
-            <a href="${anime.siteUrl}" target="_blank">Voir sur AniList</a>
-          </div>
-        `;
-        grid.appendChild(card);
-      });
-    })
-    .catch(err => {
-      document.getElementById("anime-grid").innerText = "Erreur de chargement.";
-      console.error(err);
-    });
-  </script>
 
 </body>
 </html>
