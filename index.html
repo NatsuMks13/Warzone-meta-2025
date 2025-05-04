@@ -1,163 +1,155 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Anime Sama - Planning</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>🧚◦Magnoria</title>
   <style>
     body {
       margin: 0;
       font-family: Arial, sans-serif;
-      background-color: #0f0f0f;
-      color: #fff;
+      background-color: #0e0e0e;
+      color: white;
     }
 
     header {
-      background-color: #151515;
-      padding: 10px 20px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-
-    header h1 {
+      background-color: #1a1a1a;
+      padding: 20px;
+      text-align: center;
       font-size: 24px;
+      font-weight: bold;
     }
 
     nav {
       background-color: #111;
-      padding: 15px;
-      position: fixed;
-      top: 0;
-      bottom: 0;
-      width: 240px;
-      z-index: 1000;
+      padding: 10px 20px;
       display: flex;
-      flex-direction: column;
       justify-content: space-between;
+      flex-wrap: wrap;
     }
 
     nav a {
       color: white;
       text-decoration: none;
+      margin: 10px;
       font-size: 18px;
-      margin: 10px 0;
-    }
-
-    .content {
-      margin-left: 260px;
-      padding: 20px;
     }
 
     .planning {
       display: grid;
-      grid-template-columns: repeat(7, 1fr);
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
       gap: 10px;
+      padding: 20px;
     }
 
     .day {
-      background-color: #1a1a1a;
-      padding: 10px;
-      border-radius: 5px;
+      background-color: #1d1d1d;
+      border-radius: 10px;
+      padding: 15px;
     }
 
     .day h3 {
       text-align: center;
       border-bottom: 1px solid #333;
-      padding-bottom: 5px;
     }
 
     .anime {
-      margin-top: 10px;
-      background-color: #222;
-      padding: 5px;
-      border-left: 3px solid #007bff;
+      margin: 10px 0;
+      padding-left: 10px;
+      border-left: 3px solid #7b5fff;
+    }
+
+    .comments {
+      padding: 20px;
+    }
+
+    .comments textarea {
+      width: 100%;
+      height: 60px;
+      border-radius: 5px;
+      padding: 10px;
+      border: none;
+      resize: none;
+      margin-bottom: 10px;
+    }
+
+    .comments button {
+      background-color: #7b5fff;
+      border: none;
+      padding: 10px 20px;
+      color: white;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .comment-list {
+      margin-top: 20px;
+    }
+
+    .comment {
+      background-color: #1c1c1c;
+      padding: 10px;
+      margin-bottom: 10px;
+      border-left: 3px solid #7b5fff;
     }
 
     footer {
       text-align: center;
-      margin-top: 40px;
+      padding: 20px;
       color: #aaa;
-    }
-
-    @media (max-width: 768px) {
-      nav {
-        position: static;
-        width: 100%;
-        flex-direction: row;
-        justify-content: space-around;
-      }
-
-      .content {
-        margin-left: 0;
-      }
-
-      .planning {
-        grid-template-columns: repeat(2, 1fr);
-      }
     }
   </style>
 </head>
 <body>
 
+<header>🧚◦Magnoria</header>
+
 <nav>
-  <div>
-    <h2>ANIME SAMA</h2>
-    <a href="#">Catalogue</a>
-    <a href="#">Planning</a>
-    <a href="https://discord.gg/t5GxdReBb2" target="_blank">Aide via Discord</a>
-    <a href="#">Profil</a>
-  </div>
-  <div style="text-align:center;">
-    <p>&copy; 2025 Anime–Sama</p>
-    <a href="https://twitter.com" target="_blank" style="margin-right:10px;">Twitter</a>
-    <a href="https://discord.gg/t5GxdReBb2" target="_blank">Discord</a>
-  </div>
+  <a href="#">Planning</a>
+  <a href="https://discord.gg/t5GxdReBb2" target="_blank">Aide via Discord</a>
 </nav>
 
-<div class="content">
-  <h1>Planning des Animes</h1>
-  <div class="planning">
-    <div class="day">
-      <h3>Lundi</h3>
-      <div class="anime">Aharen-san wa Hakarenai - 15h45</div>
-      <div class="anime">Zatsu Tabi - 16h00</div>
-      <div class="anime">Summer Pockets - 17h30</div>
-    </div>
-    <div class="day">
-      <h3>Mardi</h3>
-      <div class="anime">The Shiunji Family Children - 16h30</div>
-      <div class="anime">Ballpark de Tsukamaete - 19h00</div>
-    </div>
-    <div class="day">
-      <h3>Mercredi</h3>
-      <div class="anime">Lycoris Recoil Short Movie - 14h15</div>
-      <div class="anime">Your Forma - 17h50</div>
-    </div>
-    <div class="day">
-      <h3>Jeudi</h3>
-      <div class="anime">Ninkoro - 15h30</div>
-      <div class="anime">The Brilliant Healer - 17h30</div>
-    </div>
-    <div class="day">
-      <h3>Vendredi</h3>
-      <div class="anime">Bye Bye Earth - 17h20</div>
-      <div class="anime">Teogonia - 18h30</div>
-    </div>
-    <div class="day">
-      <h3>Samedi</h3>
-      <div class="anime">One Piece - ?</div>
-    </div>
-    <div class="day">
-      <h3>Dimanche</h3>
-      <div class="anime">Katarite - ?</div>
-    </div>
+<section class="planning">
+  <div class="day">
+    <h3>Lundi</h3>
+    <div class="anime">Anime A - 14h00</div>
+    <div class="anime">Anime B - 17h30</div>
   </div>
-</div>
+  <div class="day">
+    <h3>Mardi</h3>
+    <div class="anime">Anime C - 15h00</div>
+  </div>
+  <div class="day">
+    <h3>Mercredi</h3>
+    <div class="anime">Anime D - 13h45</div>
+  </div>
+  <!-- Ajoute les autres jours ici -->
+</section>
+
+<section class="comments">
+  <h2>Commentaires</h2>
+  <textarea id="commentInput" placeholder="Laisse ton commentaire..."></textarea>
+  <button onclick="addComment()">Envoyer</button>
+  <div class="comment-list" id="commentList"></div>
+</section>
 
 <footer>
-  Site fictif inspiré de Anime-sama.fr — design par toi !
+  © 2025 🧚◦Magnoria — Tous droits réservés
 </footer>
+
+<script>
+  function addComment() {
+    const input = document.getElementById("commentInput");
+    const text = input.value.trim();
+    if (text) {
+      const commentDiv = document.createElement("div");
+      commentDiv.className = "comment";
+      commentDiv.textContent = text;
+      document.getElementById("commentList").prepend(commentDiv);
+      input.value = "";
+    }
+  }
+</script>
 
 </body>
 </html>
