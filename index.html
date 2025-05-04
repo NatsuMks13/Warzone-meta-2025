@@ -2,14 +2,101 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Commentaires - 🧚◦Magnoria</title>
-  <link rel="stylesheet" href="style.css">
+  <title>🧚◦Magnoria - Animés & Commentaires</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+      color: #fff;
+      padding: 20px;
+      max-width: 800px;
+      margin: auto;
+    }
+
+    h1 {
+      color: #ff3366;
+      text-align: center;
+      font-size: 3em;
+      margin-bottom: 10px;
+    }
+
+    h2 {
+      border-bottom: 2px solid #ff3366;
+      padding-bottom: 5px;
+      margin-top: 30px;
+    }
+
+    .anime {
+      background: rgba(0, 0, 50, 0.5);
+      border: 1px solid #00ccff;
+      padding: 15px;
+      border-radius: 10px;
+      margin: 10px 0;
+      transition: transform 0.2s;
+    }
+
+    .anime:hover {
+      transform: scale(1.02);
+      background: rgba(0, 50, 80, 0.7);
+    }
+
+    .anime h3 {
+      color: #00ccff;
+      margin: 0;
+    }
+
+    .anime a {
+      color: #ff3366;
+      text-decoration: none;
+    }
+
+    form {
+      margin-top: 20px;
+      display: flex;
+      flex-direction: column;
+      background: rgba(255, 255, 255, 0.05);
+      padding: 15px;
+      border-radius: 10px;
+    }
+
+    input, textarea {
+      padding: 10px;
+      margin-bottom: 10px;
+      border: none;
+      border-radius: 5px;
+      font-size: 1em;
+    }
+
+    button {
+      background-color: #00ccff;
+      border: none;
+      padding: 10px;
+      color: black;
+      font-weight: bold;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .comment {
+      background-color: rgba(255, 255, 255, 0.1);
+      padding: 10px;
+      margin-top: 10px;
+      border-radius: 5px;
+    }
+
+    .comment strong {
+      color: #ff3366;
+    }
+  </style>
 </head>
 <body>
-  <h1>🧚◦Magnoria</h1>
-  <p>Laisse un commentaire ci-dessous !</p>
 
+  <h1>🧚◦Magnoria</h1>
+
+  <h2>Nouveaux animés</h2>
+  <div id="anime-list">Chargement des animés...</div>
+
+  <h2>Laisse un commentaire</h2>
   <form id="comment-form">
     <input type="text" id="name" placeholder="Ton nom" required>
     <textarea id="message" placeholder="Ton message..." required></textarea>
@@ -21,6 +108,56 @@
     <div id="comments"></div>
   </div>
 
-  <script src="script.js"></script>
+  <script>
+    // Chargement des animés depuis AniList API
+    const query = `
+      query {
+        Page(perPage: 6) {
+          media(season: SPRING, seasonYear: 2025, type: ANIME, sort: START_DATE_DESC) {
+            title { romaji }
+            siteUrl
+          }
+        }
+      }
+    `;
+
+    fetch("https://graphql.anilist.co", {
+      method: "POST",
+      headers: { "Content-Type": "application/json", "Accept": "application/json" },
+      body: JSON.stringify({ query })
+    })
+    .then(res => res.json())
+    .then(data => {
+      const list = document.getElementById("anime-list");
+      list.innerHTML = "";
+      data.data.Page.media.forEach(anime => {
+        list.innerHTML += `
+          <div class="anime">
+            <h3>${anime.title.romaji}</h3>
+            <a href="${anime.siteUrl}" target="_blank">Voir sur AniList</a>
+          </div>
+        `;
+      });
+    })
+    .catch(err => {
+      document.getElementById("anime-list").innerText = "Erreur de chargement.";
+    });
+
+    // Commentaires locaux
+    document.getElementById("comment-form").addEventListener("submit", function(e) {
+      e.preventDefault();
+      const name = document.getElementById("name").value.trim();
+      const message = document.getElementById("message").value.trim();
+
+      if (name && message) {
+        const commentBox = document.createElement("div");
+        commentBox.className = "comment";
+        commentBox.innerHTML = "<strong>" + name + "</strong><p>" + message + "</p>";
+        document.getElementById("comments").appendChild(commentBox);
+        document.getElementById("comment-form").reset();
+      }
+    });
+  </script>
+
 </body>
 </html>
