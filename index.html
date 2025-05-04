@@ -1,149 +1,163 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8">
-  <title>🧚◦Magnoria - Planning Anime</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Anime Sama - Planning</title>
   <style>
     body {
       margin: 0;
-      background-color: #0b0c1a;
-      color: white;
       font-family: Arial, sans-serif;
-      display: flex;
+      background-color: #0f0f0f;
+      color: #fff;
     }
 
-    .sidebar {
-      width: 250px;
-      background: linear-gradient(to bottom, #0f0c29, #302b63);
-      padding: 20px;
-      height: 100vh;
-    }
-
-    .sidebar h2 {
-      font-size: 24px;
-      color: #ff4d4d;
-      margin-bottom: 20px;
-    }
-
-    .sidebar a {
-      display: block;
-      color: white;
-      padding: 10px 0;
-      text-decoration: none;
-      border-bottom: 1px solid #333;
-      transition: background 0.3s;
-    }
-
-    .sidebar a:hover {
-      background-color: #1a1a2e;
-    }
-
-    .discord-link {
+    header {
+      background-color: #151515;
+      padding: 10px 20px;
       display: flex;
       align-items: center;
-      gap: 10px;
-      margin-top: 20px;
-      background-color: #7289da;
-      padding: 10px;
-      border-radius: 8px;
-      color: white;
-      text-decoration: none;
-      font-weight: bold;
+      justify-content: space-between;
     }
 
-    .discord-link:hover {
-      background-color: #5a6abf;
+    header h1 {
+      font-size: 24px;
+    }
+
+    nav {
+      background-color: #111;
+      padding: 15px;
+      position: fixed;
+      top: 0;
+      bottom: 0;
+      width: 240px;
+      z-index: 1000;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    nav a {
+      color: white;
+      text-decoration: none;
+      font-size: 18px;
+      margin: 10px 0;
     }
 
     .content {
-      flex-grow: 1;
-      padding: 30px;
+      margin-left: 260px;
+      padding: 20px;
     }
 
     .planning {
-      background: linear-gradient(to right, #1a1a40, #3f0d12);
-      padding: 20px;
-      border-radius: 10px;
-      max-width: 700px;
-      margin: auto;
-    }
-
-    .planning h3 {
-      color: #ff4d4d;
-      text-align: center;
-      margin-bottom: 20px;
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 10px;
     }
 
     .day {
-      border-bottom: 1px solid #444;
-      padding: 10px 0;
+      background-color: #1a1a1a;
+      padding: 10px;
+      border-radius: 5px;
     }
 
-    .day:last-child {
-      border-bottom: none;
+    .day h3 {
+      text-align: center;
+      border-bottom: 1px solid #333;
+      padding-bottom: 5px;
     }
 
     .anime {
-      padding-left: 10px;
-      margin-top: 5px;
-      color: #add8e6;
+      margin-top: 10px;
+      background-color: #222;
+      padding: 5px;
+      border-left: 3px solid #007bff;
+    }
+
+    footer {
+      text-align: center;
+      margin-top: 40px;
+      color: #aaa;
+    }
+
+    @media (max-width: 768px) {
+      nav {
+        position: static;
+        width: 100%;
+        flex-direction: row;
+        justify-content: space-around;
+      }
+
+      .content {
+        margin-left: 0;
+      }
+
+      .planning {
+        grid-template-columns: repeat(2, 1fr);
+      }
     }
   </style>
 </head>
 <body>
 
-  <div class="sidebar">
-    <h2>🧚◦Magnoria</h2>
+<nav>
+  <div>
+    <h2>ANIME SAMA</h2>
     <a href="#">Catalogue</a>
     <a href="#">Planning</a>
-    <a href="#">Aide</a>
+    <a href="https://discord.gg/t5GxdReBb2" target="_blank">Aide via Discord</a>
     <a href="#">Profil</a>
-    <a class="discord-link" href="https://discord.gg/t5GxdReBb2" target="_blank">
-      <img src="https://cdn-icons-png.flaticon.com/512/2111/2111370.png" alt="Discord" width="20" height="20">
-      Aide via Discord
-    </a>
   </div>
+  <div style="text-align:center;">
+    <p>&copy; 2025 Anime–Sama</p>
+    <a href="https://twitter.com" target="_blank" style="margin-right:10px;">Twitter</a>
+    <a href="https://discord.gg/t5GxdReBb2" target="_blank">Discord</a>
+  </div>
+</nav>
 
-  <div class="content">
-    <div class="planning">
-      <h3>Planning Hebdomadaire - Nouveaux Épisodes</h3>
-
-      <div class="day"><strong>Lundi</strong>
-        <div class="anime">- One Piece</div>
-        <div class="anime">- Wind Breaker</div>
-      </div>
-
-      <div class="day"><strong>Mardi</strong>
-        <div class="anime">- KonoSuba Saison 3</div>
-        <div class="anime">- Slime Saison 3</div>
-      </div>
-
-      <div class="day"><strong>Mercredi</strong>
-        <div class="anime">- Kaiju No.8</div>
-        <div class="anime">- Mahouka Koukou no Rettousei</div>
-      </div>
-
-      <div class="day"><strong>Jeudi</strong>
-        <div class="anime">- Re:Monster</div>
-        <div class="anime">- Yozakura-san Chi</div>
-      </div>
-
-      <div class="day"><strong>Vendredi</strong>
-        <div class="anime">- Detective Conan</div>
-        <div class="anime">- Black Clover</div>
-      </div>
-
-      <div class="day"><strong>Samedi</strong>
-        <div class="anime">- My Hero Academia</div>
-        <div class="anime">- Demon Slayer: Hashira Arc</div>
-      </div>
-
-      <div class="day"><strong>Dimanche</strong>
-        <div class="anime">- Boruto: Two Blue Vortex</div>
-        <div class="anime">- Mushoku Tensei</div>
-      </div>
+<div class="content">
+  <h1>Planning des Animes</h1>
+  <div class="planning">
+    <div class="day">
+      <h3>Lundi</h3>
+      <div class="anime">Aharen-san wa Hakarenai - 15h45</div>
+      <div class="anime">Zatsu Tabi - 16h00</div>
+      <div class="anime">Summer Pockets - 17h30</div>
+    </div>
+    <div class="day">
+      <h3>Mardi</h3>
+      <div class="anime">The Shiunji Family Children - 16h30</div>
+      <div class="anime">Ballpark de Tsukamaete - 19h00</div>
+    </div>
+    <div class="day">
+      <h3>Mercredi</h3>
+      <div class="anime">Lycoris Recoil Short Movie - 14h15</div>
+      <div class="anime">Your Forma - 17h50</div>
+    </div>
+    <div class="day">
+      <h3>Jeudi</h3>
+      <div class="anime">Ninkoro - 15h30</div>
+      <div class="anime">The Brilliant Healer - 17h30</div>
+    </div>
+    <div class="day">
+      <h3>Vendredi</h3>
+      <div class="anime">Bye Bye Earth - 17h20</div>
+      <div class="anime">Teogonia - 18h30</div>
+    </div>
+    <div class="day">
+      <h3>Samedi</h3>
+      <div class="anime">One Piece - ?</div>
+    </div>
+    <div class="day">
+      <h3>Dimanche</h3>
+      <div class="anime">Katarite - ?</div>
     </div>
   </div>
+</div>
+
+<footer>
+  Site fictif inspiré de Anime-sama.fr — design par toi !
+</footer>
 
 </body>
 </html>
