@@ -1,20 +1,38 @@
-fetch("https://api.jikan.moe/v4/seasons/now")
-  .then(res => res.json())
-  .then(data => {
-    const container = document.getElementById("anime-list");
-    container.innerHTML = "";
-    data.data.slice(0, 12).forEach(anime => {
-      const div = document.createElement("div");
-      div.className = "anime";
-      div.innerHTML = `
-        <img src="${anime.images.jpg.image_url}" alt="${anime.title}">
-        <h3>${anime.title}</h3>
-        <p>${anime.aired.from ? new Date(anime.aired.from).toLocaleDateString() : "Date inconnue"}</p>
-      `;
-      container.appendChild(div);
-    });
-  })
-  .catch(err => {
-    document.getElementById("anime-list").innerText = "Erreur de chargement.";
-    console.error(err);
-  });
+body {
+  font-family: Arial, sans-serif;
+  background-color: #0f0f0f;
+  color: white;
+  padding: 20px;
+  max-width: 700px;
+  margin: auto;
+}
+h1 {
+  color: #00ffcc;
+  text-align: center;
+}
+form {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+}
+input, textarea {
+  padding: 10px;
+  margin-bottom: 10px;
+  border-radius: 5px;
+  border: none;
+}
+button {
+  background-color: #00ffcc;
+  border: none;
+  padding: 10px;
+  color: black;
+  font-weight: bold;
+  cursor: pointer;
+  border-radius: 5px;
+}
+.comment {
+  background-color: #1e1e1e;
+  padding: 10px;
+  margin-top: 10px;
+  border-radius: 5px;
+    }
