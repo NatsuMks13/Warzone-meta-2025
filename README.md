@@ -1,1 +1,1 @@
-# Warzone-meta-2025
+# 🧚◦Magnoria
