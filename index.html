@@ -1,14 +1,26 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Nouveaux Animés</title>
-  <link rel="stylesheet" href="style.css"/>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Commentaires - 🧚◦Magnoria</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <h1>Nouveaux Animés du Jour</h1>
-  <div id="anime-list">Chargement...</div>
+  <h1>🧚◦Magnoria</h1>
+  <p>Laisse un commentaire ci-dessous !</p>
+
+  <form id="comment-form">
+    <input type="text" id="name" placeholder="Ton nom" required>
+    <textarea id="message" placeholder="Ton message..." required></textarea>
+    <button type="submit">Envoyer</button>
+  </form>
+
+  <div id="comment-section">
+    <h2>Commentaires :</h2>
+    <div id="comments"></div>
+  </div>
+
   <script src="script.js"></script>
 </body>
 </html>
