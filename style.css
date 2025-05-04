@@ -1,0 +1,78 @@
+body {
+  background: #0d0d0d;
+  color: white;
+  font-family: 'Arial', sans-serif;
+  margin: 0;
+}
+
+header {
+  text-align: center;
+  padding: 20px;
+  background: linear-gradient(90deg, red, orange, yellow, green, blue, purple);
+  -webkit-background-clip: text;
+  color: transparent;
+  font-weight: bold;
+}
+
+nav {
+  display: flex;
+  justify-content: center;
+  background-color: #111;
+  padding: 10px;
+}
+
+nav button {
+  background: none;
+  border: 2px solid #555;
+  color: white;
+  margin: 0 10px;
+  padding: 10px;
+  cursor: pointer;
+}
+
+nav button:hover {
+  border-color: #00fff7;
+  color: #00fff7;
+}
+
+main {
+  padding: 20px;
+}
+
+.category {
+  margin-bottom: 40px;
+}
+
+.hidden {
+  display: none;
+}
+
+.weapon {
+  background: #1a1a1a;
+  margin: 15px 0;
+  padding: 15px;
+  border-left: 5px solid #00f7ff;
+  border-radius: 8px;
+}
+
+.tag {
+  font-size: 0.8em;
+  padding: 3px 8px;
+  border-radius: 5px;
+  margin-left: 8px;
+  color: black;
+  font-weight: bold;
+}
+
+.buff { background-color: lime; }
+.nerf { background-color: red; }
+.new { background-color: orange; }
+.meta { background-color: cyan; }
+
+footer {
+  text-align: center;
+  padding: 15px;
+  font-size: 0.8em;
+  color: #777;
+  border-top: 1px solid #333;
+}
