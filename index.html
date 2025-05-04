@@ -141,6 +141,7 @@
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
 
 <script>
+  // Configuration Firebase
   const firebaseConfig = {
     apiKey: "AlzaSy8L0pJ4F6fRpzGfPNaYR0d0JjDPGxJrJyM",
     authDomain: "magnoria-126b7.firebaseapp.com",
@@ -153,6 +154,7 @@
   firebase.initializeApp(firebaseConfig);
   const db = firebase.firestore();
 
+  // Ajouter un commentaire
   function addComment() {
     const input = document.getElementById("commentInput");
     const text = input.value.trim();
@@ -165,6 +167,7 @@
     }
   }
 
+  // Afficher les commentaires
   db.collection("comments").orderBy("timestamp", "desc").onSnapshot(snapshot => {
     const list = document.getElementById("commentList");
     list.innerHTML = "";
@@ -175,6 +178,22 @@
       list.appendChild(div);
     });
   });
+
+  // Ajouter dynamiquement la section Nouveaux Animes
+  const nouveautesSection = document.createElement('section');
+  nouveautesSection.className = 'comments';
+  nouveautesSection.innerHTML = `
+    <h2>Nouveaux Animes</h2>
+    <ul>
+      <li>
+        <a href="https://www.adkami.com/anime/5158/16" target="_blank" style="color:#7b5fff;">
+          Sentai Daishikkaku – Épisode 16 VOSTFR Saison 2
+        </a>
+      </li>
+    </ul>
+  `;
+  const commentsSection = document.querySelector('.comments');
+  commentsSection.parentNode.insertBefore(nouveautesSection, commentsSection);
 </script>
 
 </body>
