@@ -35,28 +35,24 @@
       font-size: 18px;
     }
 
-    .planning {
+    .recommendations {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 10px;
+      gap: 20px;
       padding: 20px;
     }
 
-    .day {
+    .anime-card {
       background-color: #1d1d1d;
       border-radius: 10px;
-      padding: 15px;
-    }
-
-    .day h3 {
+      padding: 10px;
       text-align: center;
-      border-bottom: 1px solid #333;
     }
 
-    .anime {
-      margin: 10px 0;
-      padding-left: 10px;
-      border-left: 3px solid #7b5fff;
+    .anime-card img {
+      width: 100%;
+      border-radius: 10px;
+      margin-bottom: 10px;
     }
 
     .comments {
@@ -105,23 +101,22 @@
 <header>🧚◦Magnoria</header>
 
 <nav>
-  <a href="#">Planning</a>
+  <a href="#">Recommandations</a>
   <a href="https://discord.gg/t5GxdReBb2" target="_blank">Aide via Discord</a>
 </nav>
 
-<section class="planning">
-  <div class="day">
-    <h3>Lundi</h3>
-    <div class="anime">Anime A - 14h00</div>
-    <div class="anime">Anime B - 17h30</div>
+<section class="recommendations">
+  <div class="anime-card">
+    <img src="https://cdn.myanimelist.net/images/anime/1721/126508.jpg" alt="Jujutsu Kaisen" />
+    <p>Jujutsu Kaisen</p>
   </div>
-  <div class="day">
-    <h3>Mardi</h3>
-    <div class="anime">Anime C - 15h00</div>
+  <div class="anime-card">
+    <img src="https://cdn.myanimelist.net/images/anime/1445/120942.jpg" alt="Attack on Titan" />
+    <p>Attack on Titan</p>
   </div>
-  <div class="day">
-    <h3>Mercredi</h3>
-    <div class="anime">Anime D - 13h45</div>
+  <div class="anime-card">
+    <img src="https://cdn.myanimelist.net/images/anime/1915/119090.jpg" alt="Demon Slayer" />
+    <p>Demon Slayer</p>
   </div>
 </section>
 
@@ -141,7 +136,6 @@
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
 
 <script>
-  // Configuration Firebase
   const firebaseConfig = {
     apiKey: "AlzaSy8L0pJ4F6fRpzGfPNaYR0d0JjDPGxJrJyM",
     authDomain: "magnoria-126b7.firebaseapp.com",
@@ -154,7 +148,6 @@
   firebase.initializeApp(firebaseConfig);
   const db = firebase.firestore();
 
-  // Ajouter un commentaire
   function addComment() {
     const input = document.getElementById("commentInput");
     const text = input.value.trim();
@@ -167,7 +160,6 @@
     }
   }
 
-  // Afficher les commentaires
   db.collection("comments").orderBy("timestamp", "desc").onSnapshot(snapshot => {
     const list = document.getElementById("commentList");
     list.innerHTML = "";
@@ -178,22 +170,6 @@
       list.appendChild(div);
     });
   });
-
-  // Ajouter dynamiquement la section Nouveaux Animes
-  const nouveautesSection = document.createElement('section');
-  nouveautesSection.className = 'comments';
-  nouveautesSection.innerHTML = `
-    <h2>Nouveaux Animes</h2>
-    <ul>
-      <li>
-        <a href="https://www.adkami.com/anime/5158/16" target="_blank" style="color:#7b5fff;">
-          Sentai Daishikkaku – Épisode 16 VOSTFR Saison 2
-        </a>
-      </li>
-    </ul>
-  `;
-  const commentsSection = document.querySelector('.comments');
-  commentsSection.parentNode.insertBefore(nouveautesSection, commentsSection);
 </script>
 
 </body>
