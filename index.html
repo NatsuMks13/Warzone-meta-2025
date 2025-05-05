@@ -51,6 +51,7 @@
 
     .anime-card img {
       width: 100%;
+      height: auto;
       border-radius: 10px;
       margin-bottom: 10px;
     }
@@ -98,79 +99,78 @@
 </head>
 <body>
 
-<header>🧚◦Magnoria</header>
+  <header>🧚◦Magnoria</header>
 
-<nav>
-  <a href="#">Recommandations</a>
-  <a href="https://discord.gg/t5GxdReBb2" target="_blank">Aide via Discord</a>
-</nav>
+  <nav>
+    <a href="#">Recommandations</a>
+    <a href="https://discord.gg/t5GxdReBb2" target="_blank">Aide via Discord</a>
+  </nav>
 
-<section class="recommendations">
-  <div class="anime-card">
-    <img src="https://cdn.myanimelist.net/images/anime/1721/126508.jpg" alt="Jujutsu Kaisen" />
-    <p>Jujutsu Kaisen</p>
-  </div>
-  <div class="anime-card">
-    <img src="https://cdn.myanimelist.net/images/anime/1445/120942.jpg" alt="Attack on Titan" />
-    <p>Attack on Titan</p>
-  </div>
-  <div class="anime-card">
-    <img src="https://cdn.myanimelist.net/images/anime/1915/119090.jpg" alt="Demon Slayer" />
-    <p>Demon Slayer</p>
-  </div>
-</section>
+  <section class="recommendations">
+    <div class="anime-card">
+      <img src="https://upload.wikimedia.org/wikipedia/en/8/86/Jujutsu_kaisen.jpg" alt="Jujutsu Kaisen" />
+      <p>Jujutsu Kaisen</p>
+    </div>
+    <div class="anime-card">
+      <img src="https://upload.wikimedia.org/wikipedia/en/f/f6/Attack_on_Titan_S4.jpg" alt="Attack on Titan" />
+      <p>Attack on Titan</p>
+    </div>
+    <div class="anime-card">
+      <img src="https://upload.wikimedia.org/wikipedia/en/thumb/f/fb/Kimetsu_no_Yaiba_Volume_1.png/220px-Kimetsu_no_Yaiba_Volume_1.png" alt="Demon Slayer" />
+      <p>Demon Slayer</p>
+    </div>
+  </section>
 
-<section class="comments">
-  <h2>Commentaires</h2>
-  <textarea id="commentInput" placeholder="Laisse ton commentaire..."></textarea>
-  <button onclick="addComment()">Envoyer</button>
-  <div class="comment-list" id="commentList"></div>
-</section>
+  <section class="comments">
+    <h2>Commentaires</h2>
+    <textarea id="commentInput" placeholder="Laisse ton commentaire..."></textarea>
+    <button onclick="addComment()">Envoyer</button>
+    <div class="comment-list" id="commentList"></div>
+  </section>
 
-<footer>
-  © 2025 🧚◦Magnoria — Tous droits réservés
-</footer>
+  <footer>
+    © 2025 🧚◦Magnoria — Tous droits réservés
+  </footer>
 
-<!-- Firebase -->
-<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+  <!-- Firebase -->
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+  <script>
+    const firebaseConfig = {
+      apiKey: "AlzaSy8L0pJ4F6fRpzGfPNaYR0d0JjDPGxJrJyM",
+      authDomain: "magnoria-126b7.firebaseapp.com",
+      projectId: "magnoria-126b7",
+      storageBucket: "magnoria-126b7.appspot.com",
+      messagingSenderId: "769519243584",
+      appId: "1:769519243584:web:default"
+    };
 
-<script>
-  const firebaseConfig = {
-    apiKey: "AlzaSy8L0pJ4F6fRpzGfPNaYR0d0JjDPGxJrJyM",
-    authDomain: "magnoria-126b7.firebaseapp.com",
-    projectId: "magnoria-126b7",
-    storageBucket: "magnoria-126b7.appspot.com",
-    messagingSenderId: "769519243584",
-    appId: "1:769519243584:web:default"
-  };
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
 
-  firebase.initializeApp(firebaseConfig);
-  const db = firebase.firestore();
-
-  function addComment() {
-    const input = document.getElementById("commentInput");
-    const text = input.value.trim();
-    if (text) {
-      db.collection("comments").add({
-        text: text,
-        timestamp: Date.now()
-      });
-      input.value = "";
+    function addComment() {
+      const input = document.getElementById("commentInput");
+      const text = input.value.trim();
+      if (text) {
+        db.collection("comments").add({
+          text: text,
+          timestamp: Date.now()
+        });
+        input.value = "";
+      }
     }
-  }
 
-  db.collection("comments").orderBy("timestamp", "desc").onSnapshot(snapshot => {
-    const list = document.getElementById("commentList");
-    list.innerHTML = "";
-    snapshot.forEach(doc => {
-      const div = document.createElement("div");
-      div.className = "comment";
-      div.textContent = doc.data().text;
-      list.appendChild(div);
+    db.collection("comments").orderBy("timestamp", "desc").onSnapshot(snapshot => {
+      const list = document.getElementById("commentList");
+      list.innerHTML = "";
+      snapshot.forEach(doc => {
+        const div = document.createElement("div");
+        div.className = "comment";
+        div.textContent = doc.data().text;
+        list.appendChild(div);
+      });
     });
-  });
-</script>
+  </script>
 
 </body>
 </html>
