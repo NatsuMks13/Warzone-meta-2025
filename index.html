@@ -38,22 +38,33 @@
     .recommendations {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 20px;
+      gap: 15px;
       padding: 20px;
     }
 
     .anime-card {
       background-color: #1d1d1d;
       border-radius: 10px;
-      padding: 10px;
+      overflow: hidden;
       text-align: center;
+      text-decoration: none;
+      color: white;
+      transition: transform 0.2s;
+    }
+
+    .anime-card:hover {
+      transform: scale(1.03);
     }
 
     .anime-card img {
       width: 100%;
-      height: auto;
-      border-radius: 10px;
-      margin-bottom: 10px;
+      height: 300px;
+      object-fit: cover;
+    }
+
+    .anime-card p {
+      padding: 10px;
+      font-weight: bold;
     }
 
     .comments {
@@ -99,78 +110,79 @@
 </head>
 <body>
 
-  <header>🧚◦Magnoria</header>
+<header>🧚◦Magnoria</header>
 
-  <nav>
-    <a href="#">Recommandations</a>
-    <a href="https://discord.gg/t5GxdReBb2" target="_blank">Aide via Discord</a>
-  </nav>
+<nav>
+  <a href="#">Recommendations</a>
+  <a href="https://discord.gg/t5GxdReBb2" target="_blank">Aide via Discord</a>
+</nav>
 
-  <section class="recommendations">
-    <div class="anime-card">
-      <img src="https://upload.wikimedia.org/wikipedia/en/8/86/Jujutsu_kaisen.jpg" alt="Jujutsu Kaisen" />
-      <p>Jujutsu Kaisen</p>
-    </div>
-    <div class="anime-card">
-      <img src="https://upload.wikimedia.org/wikipedia/en/f/f6/Attack_on_Titan_S4.jpg" alt="Attack on Titan" />
-      <p>Attack on Titan</p>
-    </div>
-    <div class="anime-card">
-      <img src="https://upload.wikimedia.org/wikipedia/en/thumb/f/fb/Kimetsu_no_Yaiba_Volume_1.png/220px-Kimetsu_no_Yaiba_Volume_1.png" alt="Demon Slayer" />
-      <p>Demon Slayer</p>
-    </div>
-  </section>
+<section class="recommendations">
+  <a href="https://www.jujutsukaisen.jp/" target="_blank" class="anime-card">
+    <img src="https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx11757-3Jk3CBR2uCzY.png" alt="Jujutsu Kaisen" />
+    <p>Jujutsu Kaisen</p>
+  </a>
+  <a href="https://shingeki.tv/final/" target="_blank" class="anime-card">
+    <img src="https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx16498-6UKbN81xWvwA.jpg" alt="Attack on Titan" />
+    <p>Attack on Titan</p>
+  </a>
+  <a href="https://kimetsu.com/" target="_blank" class="anime-card">
+    <img src="https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx101922-TgTRD84OsYfC.jpg" alt="Demon Slayer" />
+    <p>Demon Slayer</p>
+  </a>
+</section>
 
-  <section class="comments">
-    <h2>Commentaires</h2>
-    <textarea id="commentInput" placeholder="Laisse ton commentaire..."></textarea>
-    <button onclick="addComment()">Envoyer</button>
-    <div class="comment-list" id="commentList"></div>
-  </section>
+<section class="comments">
+  <h2>Commentaires</h2>
+  <textarea id="commentInput" placeholder="Laisse ton commentaire..."></textarea>
+  <button onclick="addComment()">Envoyer</button>
+  <div class="comment-list" id="commentList"></div>
+</section>
 
-  <footer>
-    © 2025 🧚◦Magnoria — Tous droits réservés
-  </footer>
+<footer>
+  © 2025 🧚◦Magnoria — Tous droits réservés
+</footer>
 
-  <!-- Firebase -->
-  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
-  <script>
-    const firebaseConfig = {
-      apiKey: "AlzaSy8L0pJ4F6fRpzGfPNaYR0d0JjDPGxJrJyM",
-      authDomain: "magnoria-126b7.firebaseapp.com",
-      projectId: "magnoria-126b7",
-      storageBucket: "magnoria-126b7.appspot.com",
-      messagingSenderId: "769519243584",
-      appId: "1:769519243584:web:default"
-    };
+<!-- Firebase -->
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
 
-    firebase.initializeApp(firebaseConfig);
-    const db = firebase.firestore();
+<script>
+  const firebaseConfig = {
+    apiKey: "AlzaSy8L0pJ4F6fRpzGfPNaYR0d0JjDPGxJrJyM",
+    authDomain: "magnoria-126b7.firebaseapp.com",
+    projectId: "magnoria-126b7",
+    storageBucket: "magnoria-126b7.appspot.com",
+    messagingSenderId: "769519243584",
+    appId: "1:769519243584:web:default"
+  };
 
-    function addComment() {
-      const input = document.getElementById("commentInput");
-      const text = input.value.trim();
-      if (text) {
-        db.collection("comments").add({
-          text: text,
-          timestamp: Date.now()
-        });
-        input.value = "";
-      }
-    }
+  firebase.initializeApp(firebaseConfig);
+  const db = firebase.firestore();
 
-    db.collection("comments").orderBy("timestamp", "desc").onSnapshot(snapshot => {
-      const list = document.getElementById("commentList");
-      list.innerHTML = "";
-      snapshot.forEach(doc => {
-        const div = document.createElement("div");
-        div.className = "comment";
-        div.textContent = doc.data().text;
-        list.appendChild(div);
+  function addComment() {
+    const input = document.getElementById("commentInput");
+    const text = input.value.trim();
+    if (text) {
+      db.collection("comments").add({
+        text: text,
+        timestamp: Date.now()
       });
+      input.value = "";
+    }
+  }
+
+  db.collection("comments").orderBy("timestamp", "desc").onSnapshot(snapshot => {
+    const list = document.getElementById("commentList");
+    list.innerHTML = "";
+    snapshot.forEach(doc => {
+      const div = document.createElement("div");
+      div.className = "comment";
+      div.textContent = doc.data().text;
+      list.appendChild(div);
     });
-  </script>
+  });
+</script>
 
 </body>
 </html>
