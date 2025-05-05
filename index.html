@@ -64,7 +64,7 @@
       display: block;
       margin-top: 10px;
     }
-    .star {
+    .star, .star-icon {
       font-size: 24px;
       cursor: pointer;
       color: white;
@@ -72,6 +72,9 @@
       margin-top: 10px;
     }
     .star.favorited {
+      color: gold;
+    }
+    .star-icon:hover {
       color: gold;
     }
     .comments, .profile {
@@ -118,6 +121,19 @@
 
   <section class="search-bar">
     <input type="text" id="searchInput" placeholder="Rechercher un anime..." oninput="searchAnime()" />
+    <div style="margin-top: 10px;">
+      <label>Score min:
+        <input type="number" id="minScore" min="0" max="10" step="0.1" value="0" />
+      </label>
+      <label> Trier par:
+        <select id="sortBy" onchange="searchAnime()">
+          <option value="score">Score</option>
+          <option value="popularity">Popularité</option>
+          <option value="start_date">Date</option>
+        </select>
+      </label>
+      <button onclick="toggleView()">Changer vue</button>
+    </div>
   </section>
 
   <section class="anime-grid" id="animeGrid"></section>
@@ -175,27 +191,55 @@
       });
     });
 
+    let isGridView = true;
+    let lastFetchedAnimes = [];
+
+    function toggleView() {
+      isGridView = !isGridView;
+      document.getElementById("animeGrid").style.display = isGridView ? "grid" : "block";
+      displayAnime(lastFetchedAnimes);
+    }
+
     async function fetchAnime(query = "") {
-      const res = await fetch(`https://api.jikan.moe/v4/anime?q=${query}&order_by=score&sort=desc&limit=20`);
+      const sort = document.getElementById("sortBy").value;
+      const res = await fetch(`https://api.jikan.moe/v4/anime?q=${query}&order_by=${sort}&sort=desc&limit=20`);
       const data = await res.json();
+      lastFetchedAnimes = data.data;
       displayAnime(data.data);
     }
 
     function displayAnime(animes) {
       const grid = document.getElementById("animeGrid");
       grid.innerHTML = "";
-      animes.forEach(anime => {
+      const minScore = parseFloat(document.getElementById("minScore").value) || 0;
+
+      animes.filter(anime => anime.score >= minScore).forEach(anime => {
         const isFavorited = isAnimeFavorited(anime.mal_id);
+        const rating = getRating(anime.mal_id);
         const card = document.createElement("div");
         card.className = "anime-card";
+        if (!isGridView) card.style.display = "flex";
+
         card.innerHTML = `
-          <img src="${anime.images.jpg.image_url}" alt="${anime.title}" />
-          <div>${anime.title}</div>
-          <a href="${anime.url}" target="_blank">Voir sur MyAnimeList</a>
-          <div class="star ${isFavorited ? 'favorited' : ''}" onclick="toggleFavorite(${anime.mal_id}, '${anime.title.replace(/'/g, "\\'")}', '${anime.images.jpg.image_url}', this)">★</div>
+          <img src="${anime.images.jpg.image_url}" alt="${anime.title}" style="${!isGridView ? 'width: 100px; margin-right: 10px;' : ''}" />
+          <div style="${!isGridView ? 'flex: 1;' : ''}">
+            <div><strong>${anime.title}</strong></div>
+            <a href="${anime.url}" target="_blank">Voir sur MyAnimeList</a>
+            <div class="star ${isFavorited ? 'favorited' : ''}" onclick="toggleFavorite(${anime.mal_id}, '${anime.title.replace(/'/g, "\\'")}', '${anime.images.jpg.image_url}', this)">★</div>
+            <div class="rating" data-id="${anime.mal_id}">
+              ${renderStars(anime.mal_id, rating)}
+            </div>
+          </div>
         `;
         grid.appendChild(card);
       });
+
+      addRatingListeners();
+    }
+
+    function searchAnime() {
+      const value = document.getElementById("searchInput").value;
+      fetchAnime(value);
     }
 
     function toggleFavorite(id, title, image, starEl) {
@@ -229,12 +273,36 @@
       });
     }
 
-    function searchAnime() {
-      const value = document.getElementById("searchInput").value;
-      fetchAnime(value);
+    function getRating(id) {
+      const ratings = JSON.parse(localStorage.getItem("ratings") || "{}");
+      return ratings[id] || 0;
     }
 
-    // Profil photo + temps passé
+    function setRating(id, value) {
+      const ratings = JSON.parse(localStorage.getItem("ratings") || "{}");
+      ratings[id] = value;
+      localStorage.setItem("ratings", JSON.stringify(ratings));
+    }
+
+    function renderStars(id, selected = 0) {
+      let html = '';
+      for (let i = 1; i <= 5; i++) {
+        html += `<span class="star-icon" data-id="${id}" data-value="${i}" style="color:${i <= selected ? 'gold' : 'white'};">★</span>`;
+      }
+      return html;
+    }
+
+    function addRatingListeners() {
+      document.querySelectorAll(".star-icon").forEach(star => {
+        star.onclick = () => {
+          const id = star.getAttribute("data-id");
+          const value = parseInt(star.getAttribute("data-value"));
+          setRating(id, value);
+          displayAnime(lastFetchedAnimes);
+        };
+      });
+    }
+
     const profileImage = document.getElementById("profileImage");
     const profilePicInput = document.getElementById("profilePic");
     profilePicInput.addEventListener("change", e => {
