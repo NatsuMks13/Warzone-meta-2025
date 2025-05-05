@@ -1,7 +1,8 @@
-<!DOCTYPE html><html lang="fr">
+<!DOCTYPE html>
+<html lang="fr">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>🧚◦Magnoria</title>
   <style>
     body {
@@ -10,10 +11,10 @@
       background-color: #0e0e0e;
       color: white;
     }
-    header {
+    header, footer {
       background-color: #1a1a1a;
-      padding: 20px;
       text-align: center;
+      padding: 20px;
       font-size: 24px;
       font-weight: bold;
     }
@@ -30,38 +31,50 @@
       margin: 10px;
       font-size: 18px;
     }
-    .anime-section {
+    .search-bar {
+      text-align: center;
       padding: 20px;
+    }
+    .search-bar input {
+      width: 80%;
+      padding: 10px;
+      border-radius: 5px;
+      border: none;
     }
     .anime-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
       gap: 20px;
+      padding: 20px;
     }
     .anime-card {
       background-color: #1d1d1d;
-      padding: 10px;
       border-radius: 10px;
+      overflow: hidden;
+      padding: 10px;
       text-align: center;
     }
     .anime-card img {
       width: 100%;
-      height: auto;
-      border-radius: 10px;
+      border-radius: 5px;
+    }
+    .anime-card a {
+      color: #7b5fff;
+      text-decoration: none;
+      display: block;
+      margin-top: 10px;
     }
     .star {
       font-size: 24px;
       cursor: pointer;
       color: white;
-      transition: color 0.3s ease;
+      transition: color 0.3s;
+      margin-top: 10px;
     }
     .star.favorited {
       color: gold;
     }
-    .profile-section {
-      padding: 20px;
-    }
-    .comments {
+    .comments, .profile {
       padding: 20px;
     }
     .comments textarea {
@@ -81,41 +94,56 @@
       border-radius: 5px;
       cursor: pointer;
     }
-    .comment-list {
+    .comment-list, .favorite-list {
       margin-top: 20px;
     }
-    .comment {
+    .comment, .favorite {
       background-color: #1c1c1c;
       padding: 10px;
       margin-bottom: 10px;
       border-left: 3px solid #7b5fff;
     }
-    footer {
-      text-align: center;
-      padding: 20px;
-      color: #aaa;
+    .profile img {
+      width: 100px;
+      border-radius: 50%;
     }
   </style>
 </head>
 <body>
   <header>🧚◦Magnoria</header>
   <nav>
-    <a href="#">Animes disponibles</a>
+    <a href="#">Anime Disponible</a>
     <a href="https://discord.gg/t5GxdReBb2" target="_blank">Aide via Discord</a>
   </nav>
-  <section class="anime-section">
-    <h2>Animes disponibles</h2>
-    <div id="animeGrid" class="anime-grid"></div>
+
+  <section class="search-bar">
+    <input type="text" id="searchInput" placeholder="Rechercher un anime..." oninput="searchAnime()" />
   </section>
+
+  <section class="anime-grid" id="animeGrid"></section>
+
   <section class="comments">
     <h2>Commentaires</h2>
     <textarea id="commentInput" placeholder="Laisse ton commentaire..."></textarea>
     <button onclick="addComment()">Envoyer</button>
     <div class="comment-list" id="commentList"></div>
   </section>
-  <footer>
-    © 2025 🧚◦Magnoria — Tous droits réservés
-  </footer>  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>  <script>
+
+  <section class="profile">
+    <h2>Ton Profil</h2>
+    <input type="file" id="profilePic" accept="image/*" />
+    <br /><br />
+    <img id="profileImage" src="" alt="Photo de profil" />
+    <p>Temps passé : <span id="timeSpent">0</span> secondes</p>
+    <h3>Favoris</h3>
+    <div class="favorite-list" id="favoriteList"></div>
+  </section>
+
+  <footer>© 2025 🧚◦Magnoria — Tous droits réservés</footer>
+
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+  <script>
     const firebaseConfig = {
       apiKey: "AlzaSy8L0pJ4F6fRpzGfPNaYR0d0JjDPGxJrJyM",
       authDomain: "magnoria-126b7.firebaseapp.com",
@@ -124,7 +152,6 @@
       messagingSenderId: "769519243584",
       appId: "1:769519243584:web:default"
     };
-
     firebase.initializeApp(firebaseConfig);
     const db = firebase.firestore();
 
@@ -132,10 +159,7 @@
       const input = document.getElementById("commentInput");
       const text = input.value.trim();
       if (text) {
-        db.collection("comments").add({
-          text: text,
-          timestamp: Date.now()
-        });
+        db.collection("comments").add({ text: text, timestamp: Date.now() });
         input.value = "";
       }
     }
@@ -151,46 +175,94 @@
       });
     });
 
-    function fetchAnime() {
-      fetch("https://api.jikan.moe/v4/top/anime")
-        .then(res => res.json())
-        .then(data => displayAnime(data.data))
-        .catch(err => console.error("Erreur API:", err));
+    async function fetchAnime(query = "") {
+      const res = await fetch(`https://api.jikan.moe/v4/anime?q=${query}&order_by=score&sort=desc&limit=20`);
+      const data = await res.json();
+      displayAnime(data.data);
     }
 
     function displayAnime(animes) {
       const grid = document.getElementById("animeGrid");
-      const favorites = JSON.parse(localStorage.getItem("favorites") || "[]");
       grid.innerHTML = "";
       animes.forEach(anime => {
-        const isFavorited = favorites.some(f => f.title === anime.title);
+        const isFavorited = isAnimeFavorited(anime.mal_id);
         const card = document.createElement("div");
         card.className = "anime-card";
         card.innerHTML = `
           <img src="${anime.images.jpg.image_url}" alt="${anime.title}" />
           <div>${anime.title}</div>
           <a href="${anime.url}" target="_blank">Voir sur MyAnimeList</a>
-          <div class="star ${isFavorited ? 'favorited' : ''}" onclick="toggleFavorite('${anime.title}', '${anime.images.jpg.image_url}', this)">★</div>
+          <div class="star ${isFavorited ? 'favorited' : ''}" onclick="toggleFavorite(${anime.mal_id}, '${anime.title.replace(/'/g, "\\'")}', '${anime.images.jpg.image_url}', this)">★</div>
         `;
         grid.appendChild(card);
       });
     }
 
-    function toggleFavorite(title, image, el) {
+    function toggleFavorite(id, title, image, starEl) {
       const favorites = JSON.parse(localStorage.getItem("favorites") || "[]");
-      const index = favorites.findIndex(fav => fav.title === title);
-      if (index !== -1) {
+      const index = favorites.findIndex(fav => fav.id === id);
+      if (index > -1) {
         favorites.splice(index, 1);
-        el.classList.remove("favorited");
+        starEl.classList.remove("favorited");
       } else {
-        favorites.push({ title, image });
-        el.classList.add("favorited");
+        favorites.push({ id, title, image });
+        starEl.classList.add("favorited");
       }
       localStorage.setItem("favorites", JSON.stringify(favorites));
+      displayFavorites();
+    }
+
+    function isAnimeFavorited(id) {
+      const favorites = JSON.parse(localStorage.getItem("favorites") || "[]");
+      return favorites.some(fav => fav.id === id);
+    }
+
+    function displayFavorites() {
+      const list = document.getElementById("favoriteList");
+      const favorites = JSON.parse(localStorage.getItem("favorites") || "[]");
+      list.innerHTML = "";
+      favorites.forEach(fav => {
+        const div = document.createElement("div");
+        div.className = "favorite";
+        div.innerHTML = `<img src="${fav.image}" width="50"/> ${fav.title}`;
+        list.appendChild(div);
+      });
+    }
+
+    function searchAnime() {
+      const value = document.getElementById("searchInput").value;
+      fetchAnime(value);
+    }
+
+    // Profil photo + temps passé
+    const profileImage = document.getElementById("profileImage");
+    const profilePicInput = document.getElementById("profilePic");
+    profilePicInput.addEventListener("change", e => {
+      const file = e.target.files[0];
+      const reader = new FileReader();
+      reader.onload = function (e) {
+        localStorage.setItem("profilePic", e.target.result);
+        profileImage.src = e.target.result;
+      };
+      reader.readAsDataURL(file);
+    });
+
+    function trackTime() {
+      let time = parseInt(localStorage.getItem("timeSpent")) || 0;
+      setInterval(() => {
+        time++;
+        document.getElementById("timeSpent").textContent = time;
+        localStorage.setItem("timeSpent", time);
+      }, 1000);
     }
 
     window.onload = () => {
+      const saved = localStorage.getItem("profilePic");
+      if (saved) profileImage.src = saved;
       fetchAnime();
+      trackTime();
+      displayFavorites();
     };
-  </script></body>
+  </script>
+</body>
 </html>
