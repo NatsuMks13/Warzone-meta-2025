@@ -1,144 +1,136 @@
 <!DOCTYPE html><html lang="fr">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>🧚◦Magnoria</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Magnoria - Anime App</title>
   <style>
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background-color: #0e0e0e;
-      color: white;
-    }
-    header {
-      background-color: #1a1a1a;
-      padding: 20px;
-      text-align: center;
-      font-size: 24px;
-      font-weight: bold;
-    }
-    nav {
-      background-color: #111;
-      padding: 10px 20px;
-      display: flex;
-      justify-content: space-between;
-      flex-wrap: wrap;
-    }
-    nav a {
-      color: white;
-      text-decoration: none;
-      margin: 10px;
-      font-size: 18px;
-    }
-    .search-bar {
-      text-align: center;
-      padding: 20px;
-    }
-    .search-bar input {
-      padding: 10px;
-      width: 80%;
-      max-width: 400px;
-      border-radius: 5px;
-      border: none;
-    }
-    .anime-list {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 15px;
-      padding: 20px;
-    }
-    .anime-card {
-      background-color: #1c1c1c;
-      padding: 10px;
-      border-radius: 10px;
-      text-align: center;
-    }
-    .anime-card img {
-      width: 100%;
-      border-radius: 10px;
-    }
-    .anime-card a {
-      color: #7b5fff;
-      text-decoration: none;
-    }
-    .auth-section {
-      padding: 20px;
-      text-align: center;
-    }
-    .auth-section input {
-      margin: 5px;
-      padding: 8px;
-      border-radius: 5px;
-    }
-    footer {
-      text-align: center;
-      padding: 20px;
-      color: #aaa;
-    }
+    body { font-family: sans-serif; background: #111; color: white; padding: 20px; }
+    h1, h2 { color: #ffcc00; }
+    .container { max-width: 500px; margin: auto; }
+    input, button, select { width: 100%; margin: 5px 0; padding: 10px; }
+    .anime { border: 1px solid #444; margin: 10px 0; padding: 10px; border-radius: 8px; }
+    img { width: 100px; height: auto; border-radius: 5px; }
+    .profile-pic { width: 100px; height: 100px; border-radius: 50%; object-fit: cover; }
   </style>
 </head>
 <body>
-  <header>🧚◦Magnoria</header>
-  <nav>
-    <a href="#">Animes disponibles</a>
-    <a href="https://discord.gg/t5GxdReBb2" target="_blank">Aide via Discord</a>
-  </nav>  <div class="search-bar">
-    <input type="text" id="searchInput" placeholder="Rechercher un anime..." oninput="searchAnime()" />
-  </div>  <section class="anime-list" id="animeList"></section>  <div class="auth-section">
-    <h2>Créer un compte</h2>
-    <input type="email" id="email" placeholder="Email" />
-    <input type="password" id="password" placeholder="Mot de passe" />
-    <button onclick="register()">S'inscrire</button>
-  </div>  <footer>
-    © 2025 🧚◦Magnoria — Tous droits réservés
-  </footer>  <!-- Firebase -->  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>  <script>
-    const firebaseConfig = {
-      apiKey: "AIzaSyBL0pJ4F6fRpzGFpNaYR0d0JbPGDxJrJyM",
-      authDomain: "magnoria-126b7.firebaseapp.com",
-      projectId: "magnoria-126b7",
-    };
+  <div class="container">
+    <h1>Bienvenue sur Magnoria</h1><!-- Formulaires -->
+<div id="auth">
+  <h2>Créer un compte</h2>
+  <input type="text" id="newId" placeholder="Identifiant">
+  <input type="password" id="newPass" placeholder="Mot de passe">
+  <button onclick="register()">S'inscrire</button>
 
-    firebase.initializeApp(firebaseConfig);
-    const auth = firebase.auth();
+  <h2>Se connecter</h2>
+  <input type="text" id="loginId" placeholder="Identifiant">
+  <input type="password" id="loginPass" placeholder="Mot de passe">
+  <button onclick="login()">Connexion</button>
+</div>
+
+<!-- Profil -->
+<div id="profile" style="display:none">
+  <h2>Mon Profil</h2>
+  <input type="file" id="profileImg" onchange="uploadProfilePic()">
+  <img id="profilePic" class="profile-pic" src="" alt="Photo de profil">
+  <h3 id="userDisplay"></h3>
+
+  <h3>Rechercher un anime</h3>
+  <input type="text" id="searchBar" oninput="searchAnime()" placeholder="Rechercher...">
+  <div id="animeList"></div>
+
+  <h3>Mes favoris</h3>
+  <div id="favorites"></div>
+  <button onclick="logout()">Déconnexion</button>
+</div>
+
+  </div>  <script>
+    let currentUser = null;
 
     function register() {
-      const email = document.getElementById("email").value;
-      const password = document.getElementById("password").value;
-      auth.createUserWithEmailAndPassword(email, password)
-        .then(() => alert("Compte créé !"))
-        .catch(error => alert(error.message));
+      const id = document.getElementById('newId').value;
+      const pass = document.getElementById('newPass').value;
+      localStorage.setItem(`user_${id}`, JSON.stringify({ pass, favorites: [], pic: '' }));
+      alert('Compte créé. Vous pouvez vous connecter.');
     }
 
-    let allAnimes = [];
-
-    async function fetchAnimes() {
-      const res = await fetch("https://api.jikan.moe/v4/top/anime");
-      const data = await res.json();
-      allAnimes = data.data;
-      displayAnimes(allAnimes);
+    function login() {
+      const id = document.getElementById('loginId').value;
+      const pass = document.getElementById('loginPass').value;
+      const user = JSON.parse(localStorage.getItem(`user_${id}`));
+      if (user && user.pass === pass) {
+        currentUser = id;
+        document.getElementById('auth').style.display = 'none';
+        document.getElementById('profile').style.display = 'block';
+        document.getElementById('userDisplay').innerText = id;
+        if (user.pic) document.getElementById('profilePic').src = user.pic;
+        loadFavorites();
+        loadAnimeList();
+      } else {
+        alert('Identifiants invalides');
+      }
     }
 
-    function displayAnimes(animes) {
-      const list = document.getElementById("animeList");
-      list.innerHTML = "";
+    function logout() {
+      currentUser = null;
+      document.getElementById('auth').style.display = 'block';
+      document.getElementById('profile').style.display = 'none';
+    }
+
+    function uploadProfilePic() {
+      const file = document.getElementById('profileImg').files[0];
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        document.getElementById('profilePic').src = e.target.result;
+        let user = JSON.parse(localStorage.getItem(`user_${currentUser}`));
+        user.pic = e.target.result;
+        localStorage.setItem(`user_${currentUser}`, JSON.stringify(user));
+      };
+      reader.readAsDataURL(file);
+    }
+
+    function loadAnimeList() {
+      const animes = [
+        { title: "Jujutsu Kaisen", img: "https://upload.wikimedia.org/wikipedia/en/thumb/e/e5/Jujutsu_Kaisen_Volume_1.jpg/220px-Jujutsu_Kaisen_Volume_1.jpg" },
+        { title: "Attack on Titan", img: "https://upload.wikimedia.org/wikipedia/en/7/79/Shingeki_no_Kyojin_manga_volume_1.jpg" },
+        { title: "Demon Slayer", img: "https://upload.wikimedia.org/wikipedia/en/thumb/3/30/Kimetsu_no_Yaiba_Volume_1.png/220px-Kimetsu_no_Yaiba_Volume_1.png" }
+      ];
+      const container = document.getElementById('animeList');
+      container.innerHTML = '';
       animes.forEach(anime => {
-        const card = document.createElement("div");
-        card.className = "anime-card";
-        card.innerHTML = `
-          <img src="${anime.images.jpg.image_url}" alt="${anime.title}" />
-          <h3>${anime.title}</h3>
-          <a href="${anime.url}" target="_blank">Voir sur MyAnimeList</a>
-        `;
-        list.appendChild(card);
+        const div = document.createElement('div');
+        div.className = 'anime';
+        div.innerHTML = `<img src="${anime.img}"><p>${anime.title}</p><button onclick='addFavorite("${anime.title}", "${anime.img}")'>Ajouter aux favoris</button>`;
+        container.appendChild(div);
+      });
+    }
+
+    function addFavorite(title, img) {
+      let user = JSON.parse(localStorage.getItem(`user_${currentUser}`));
+      user.favorites.push({ title, img });
+      localStorage.setItem(`user_${currentUser}`, JSON.stringify(user));
+      loadFavorites();
+    }
+
+    function loadFavorites() {
+      const container = document.getElementById('favorites');
+      container.innerHTML = '';
+      const user = JSON.parse(localStorage.getItem(`user_${currentUser}`));
+      user.favorites.forEach(anime => {
+        const div = document.createElement('div');
+        div.className = 'anime';
+        div.innerHTML = `<img src="${anime.img}"><p>${anime.title}</p>`;
+        container.appendChild(div);
       });
     }
 
     function searchAnime() {
-      const value = document.getElementById("searchInput").value.toLowerCase();
-      const filtered = allAnimes.filter(anime => anime.title.toLowerCase().includes(value));
-      displayAnimes(filtered);
+      const filter = document.getElementById('searchBar').value.toLowerCase();
+      const list = document.getElementById('animeList').children;
+      Array.from(list).forEach(item => {
+        const title = item.innerText.toLowerCase();
+        item.style.display = title.includes(filter) ? 'block' : 'none';
+      });
     }
-
-    fetchAnimes();
   </script></body>
 </html>
